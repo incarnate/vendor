@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Vendor</title>
+
+    <script src="https://rawgit.com/aframevr/aframe/917c06889ee1f3f79b7b1bbd9eab9815f9512503/dist/aframe.min.js"></script>
+    <script src="https://npmcdn.com/aframe-animation-component@3.0.1"></script>
+    <script src="https://npmcdn.com/aframe-event-set-component@3.0.1"></script>
+    <script src="https://npmcdn.com/aframe-layout-component@3.0.1"></script>
+    <script src="https://npmcdn.com/aframe-template-component@3.0.1"></script>
+    <script src="https://rawgit.com/bryik/aframe-bmfont-text-component/master/dist/aframe-bmfont-text-component.min.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-gif-component/master/dist/aframe-gif-component.min.js"></script>
+    <script src="https://rawgit.com/IdeaSpaceVR/aframe-particle-system-component/master/dist/aframe-particle-system-component.min.js"></script>
+
+    <script src="components/pick-product.js"></script>
+    <script src="components/pick-card.js"></script>
+    <script src="components/start-over.js"></script>
+    <script src="components/update-raycaster.js"></script>
+</head>
+<body>
+    <a-scene>
+        <a-assets>
+            <audio id="click-sound" src="audio/click.ogg"></audio>
+
+            <img id="room" src="images/eway-room.jpg" />
+            <img id="coke-texture" src="images/coke-texture.jpg">
+            <img id="mountaindew-texture" src="images/montaindew-texture.png">
+            <img id="sprite-texture" src="images/sprite-texture.jpg">
+
+            <img id="eway-logo" src="images/eWAY-Logo-64x33.png" />
+            <img id="visa" src="images/Visa.png" />
+            <img id="masterCard" src="images/MasterCard.png" />
+            <img id="amex" src="images/Amex.png" />
+
+            <img id="fireworks-gif" src="images/fireworks.gif" />
+            <img id="star" src="images/star.png" />
+            <img id="start-over" src="images/start-over.png" />
+
+            <!-- Product Script -->
+            <script id="product" type="text/nunjucks">
+                <a-cylinder height="1.5"
+                        radius="0.5"
+                        src="{{ texture }}"
+                        event-set__1="_event: mousedown; scale: 1 1 1"
+                        event-set__2="_event: mouseup; scale: 1.2 1.2 1"
+                        event-set__3="_event: mouseenter; scale: 1.2 1.2 1"
+                        event-set__4="_event: mouseleave; scale: 1 1 1"
+                        pick-product="on: click; choice: {{ choice }}"
+                        sound="on: click; src: #click-sound"
+                        update-raycaster="#cursor"></a-cylinder>
+            </script>
+
+            <!-- Cards Script -->
+            <script id="sceneCards" type="text/nunjucks">
+                <a-plane class="link" height="1" width="2"
+                        material="shader: flat; src: {{ texture }}"
+                        event-set__1="_event: mousedown; scale: 1 1 1"
+                        event-set__2="_event: mouseup; scale: 1 1 1"
+                        event-set__3="_event: mouseenter; scale: 1.2 1.2 1"
+                        event-set__4="_event: mouseleave; scale: 1 1 1"
+                        pick-card="on: click; card: {{ card }}"
+                        sound="on: click; src: #click-sound"
+                        update-raycaster="#cursor"></a-plane>
+            </script>
+
+        </a-assets>
+
+        <!-- Product Screen -->
+        <a-entity id="products">
+            <a-sky id="image-360" radius="10" src="#room" rotation="0 150 0"></a-sky>
+            <!-- Products -->
+            <a-entity id="links" layout="type: line; margin: 1.5" position="-2 -1 -4">
+                <a-entity template="src: #product" data-choice="mountaindew" data-texture="#mountaindew-texture" rotation="0 -170 0" position="-1.9 -1 -4"></a-entity>
+                <a-entity template="src: #product" data-choice="coke" data-texture="#coke-texture" position="0 -1 -5" rotation="0 -170 0"></a-entity>
+                <a-entity template="src: #product" data-choice="sprite" data-texture="#sprite-texture" rotation="0 130 0" position="1.9 -1 -4"></a-entity>
+            </a-entity>
+        </a-entity>
+
+        <!-- Cards Screen -->
+        <a-entity id="cards" visible="false">
+            <a-sky id="cards-360" radius="100" color="#F39C12"></a-sky>
+            <!-- Cards -->
+            <a-image src="images/eWAY-Logo-64x33.png" width="2" height="1" position="0 0.6 -5"></a-image>
+            <a-cylinder height="1.5" radius="0.5" id="card-product" src"#coke-texture" position="-2 .65 -5" rotation="0 -170 0"></a-cylinder>
+            <a-entity bmfont-text="text: Total: $2.00;" scale="1 0.5 1" position="-0.55 -0.07 -3"></a-entity>
+
+            <a-entity template="src: #sceneCards" data-texture="#visa" data-card='965458723852' rotation="0 40 0" position="-1.9 -1 -4"></a-entity>
+            <a-entity template="src: #sceneCards" data-texture="#masterCard" data-card='917758625852' position="0 -1 -5"></a-entity>
+            <a-entity template="src: #sceneCards" data-texture="#amex" data-card='955758793652' rotation="0 -40 0" position="1.9 -1 -4"></a-entity>
+        </a-entity>
+
+        <!-- Success Screen -->
+        <a-entity id="success" visible="false">
+            <a-sky src="#fireworks-gif" material="shader:gif;src:url(#fireworks-gif);" gif=""></a-sky>
+            <!-- This looks cool but crashes my browser :-/
+            <a-entity position="0 2 -6" particle-system></a-entity>
+            -->
+            <a-cylinder height="1.5" radius="0.5" id="success-product" src"#coke-texture" position="0 2 -5" rotation="0 -170 0"></a-cylinder>
+            <a-entity bmfont-text="text: Success; color:#F39C12;" scale="4 4 4" position="-1.2 -0.15 -3"></a-entity>
+            <a-plane src="#start-over" position="0 -1.2 -3" start-over="on: click;" sound="on: click; src: #click-sound"></a-plane>
+            </a-entity>
+        </a-entity>
+
+        <!-- Camera + cursor. -->
+        <a-entity>
+            <a-entity camera look-controls id="camera">
+                <a-cursor id="cursor"
+                      animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150"
+                      animation__fusing="property: fusing; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500"
+                      event-set__1="_event: mouseenter; color: springgreen"
+                      event-set__2="_event: mouseleave; color: black"
+                      raycaster="objects: .link"></a-cursor>
+            </a-entity>
+        </a-entity>
+
+    </a-scene>
+
+    <script type="text/javascript">
+      var drink = '';
+    </script>
+</body>
+</html>

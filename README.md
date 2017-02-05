@@ -10,7 +10,7 @@ Some clean up and enhancements made before publishing.
 
 Using a VR Viewer such as Google Cardboard is the best way to experience Vendor. Alternatively, a browser works fine.
 
-Open up the Vendor site in your device, and enter any email & password to get past the login screen (these details aren't sent or stored anyway).
+Open up the [Vendor site](https://vendor.incarnated.net) in your device, and enter any email & password to get past the login screen (these details aren't sent or stored anyway).
 In a real store, this would log you into your account which already has your card and address details.
 
 If you are using Cardboard, rotate the phone to landscape and touch the Cardboard logo in the lower right.
@@ -34,4 +34,4 @@ This demo built by Xin L, [Matthew D](https://github.com/Matthew-Dove), Vlado T 
 
 Supported by [eWAY](https://www.eway.com.au)
 
-![eWAY Labs](https://raw.githubusercontent.com/incarnate/vendor/images/eway_labs.png)
+![eWAY Labs](https://raw.githubusercontent.com/incarnate/vendor/master/images/eway_labs.png "eWAY Labs")
